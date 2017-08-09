@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js">
+  </script>
+
+  <script>
+
+    $(function() {
+      $.getJSON('https://cdn.rawgit.com/chaodonghu/patient-modified.json/bd4f75a1/patient-modified.json', (data) => {
+        const identifier = data.identifier[0]
+        const firstName = identifier.name.given[0];
+        const lastName = identifier.name.family[0];
+        const organizationName = identifier.managingOrganization.display;
+        const gender = identifier.gender;
+        const conditionsLength = identifier.conditions.length;
+        const conditions = identifier.conditions.map((condition) => {
+          return `<li> ${condition} </li>`
+        });
+
+        var patientRow =
+          `
+        <tr>
+        <td> ${firstName} ${lastName} </td>
+        <td> ${organizationName} </td>
+        <td> ${gender} </td>
+        <td> ${conditionsLength} </td>
+        <td>  ${conditions.join(' ')} </td>
+        </tr>`
+        $(patientRow).appendTo("#patient tbody");
+      });
+    });
+
+  </script>
+</head>
+
+<body>
+  <table id="patient" border="1">
+    <thead>
+      <th>Name of Patient</th>
+      <th>Organization name</th>
+      <th>Gender</th>
+      <th>Number of conditions they have</th>
+      <th>List of all conditions</th>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</body>
+
+</html>
